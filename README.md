@@ -133,3 +133,68 @@ mvn spring-boot:run
 - **Modular Design**: Service and repository layers for maintainability.
 
 ---
+
+## Testing and TDD Approach
+
+Our project incorporates **JUnit** for comprehensive testing and follows a **Test-Driven Development (TDD)** methodology to ensure code reliability, maintainability, and alignment with project requirements.
+
+### Testing Frameworks and Tools Used
+- **JUnit**: For writing and running test cases.
+- **Mockito**: For mocking dependencies and simulating behaviors in unit tests.
+- **AssertJ**: For fluent and expressive assertions.
+- **H2 Database**: For in-memory integration testing with a clean, isolated database state.
+
+### Key Test Categories
+1. **Unit Tests**:
+   - Focused on individual components like services and repositories.
+   - Mocked external dependencies using `Mockito` to test isolated logic.
+   - Example: `WeatherServiceImplTest` verifies weather data retrieval with and without cached data.
+
+2. **Integration Tests**:
+   - Validated end-to-end functionality of components interacting with each other.
+   - Used the **H2 in-memory database** to simulate real database behavior.
+   - Example: `LocationRepositoryTest` and `WeatherDataRepositoryTest` test CRUD operations and custom queries.
+
+3. **Test Coverage**:
+   - Comprehensive coverage of all major components.
+   - Assured validation logic, database interactions, and service flows are functioning as expected.
+
+A Maven project structure with the appropriate placement of test files:
+src
+├── main
+│   ├── java
+│   │   └── com
+│   │       └── example
+│   │           ├── controller
+│   │           ├── service
+│   │           ├── repository
+│   │           ├── model
+│   │           └── config
+│   └── resources
+│       └── application.properties
+│       
+└── test
+    └── java
+        └── com
+            └── example
+                ├── service
+                │   └── WeatherServiceImplTest.java
+                └── repository
+                    ├── LocationRepositoryTest.java
+                    └── WeatherDataRepositoryTest.java
+
+### Configuration for Testing
+- The `application.properties` file ensures isolated testing with in-memory or dedicated test databases:
+  ```properties
+  spring.datasource.url=jdbc:h2:mem:testdb
+  spring.jpa.hibernate.ddl-auto=create-drop
+  spring.datasource.driver-class-name=org.h2.Driver
+  spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+  ```
+
+### Running Tests
+To run all test cases:
+```bash
+mvn clean test
+```
+---
